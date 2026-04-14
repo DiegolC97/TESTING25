@@ -1,0 +1,67 @@
+{
+  "extends": ["next/core-web-vitals"],
+  "rules": {
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": [
+          {
+            "group": ["@infrastructure/*"],
+            "importNames": ["*"],
+            "message": "Domain and Application layers must not import from Infrastructure. Use dependency injection."
+          }
+        ]
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["src/domain/**/*.ts"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["@application/*", "@infrastructure/*", "@interfaces/*"],
+                "message": "Domain layer must not import from any other layer."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/application/**/*.ts"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["@infrastructure/*", "@interfaces/*"],
+                "message": "Application layer must not import from Infrastructure or Interfaces."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/interfaces/**/*.ts", "src/interfaces/**/*.tsx"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["@domain/*", "@infrastructure/*"],
+                "message": "Interfaces layer must not import from Domain or Infrastructure directly."
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
