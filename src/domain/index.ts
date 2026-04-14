@@ -1,4 +1,4 @@
-export { User } from './entities';
+export { User, Counter } from './entities';
 export { Email } from './value-objects';
 export type { UserRepository } from './repositories';
 export { UserDomainService } from './services';
