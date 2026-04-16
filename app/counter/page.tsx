@@ -17,7 +17,7 @@ export default function CounterPage() {
       <h1 style={{ fontSize: '2rem', fontWeight: 700 }}>Counter</h1>
       <p style={{ color: '#6b7280', textAlign: 'center' }}>
         Click <strong>+</strong> or <strong>−</strong> to change the count. Hit{' '}
-        <strong>Reset</strong> to return to zero.
+        <strong>Restart</strong> to return to zero.
       </p>
       <Counter />
     </main>

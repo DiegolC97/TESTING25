@@ -1,6 +1,7 @@
 'use client';
 
 import type { CSSProperties } from 'react';
+import { Counter as CounterEntity } from '@domain/entities';
 import { useCounter } from '@interfaces/hooks';
 
 /**
@@ -12,20 +13,44 @@ import { useCounter } from '@interfaces/hooks';
 export function Counter() {
   const { count, increment, decrement, reset } = useCounter();
 
+  const atMin = count === CounterEntity.MIN;
+  const atMax = count === CounterEntity.MAX;
+
   return (
     <div style={styles.wrapper}>
-      <p style={styles.count}>{count}</p>
+      <p style={styles.count} aria-live="polite" aria-atomic="true">
+        {count}
+      </p>
       <div style={styles.controls}>
-        <button onClick={decrement} style={styles.button} aria-label="Decrement">
+        <button
+          onClick={decrement}
+          disabled={atMin}
+          style={{ ...styles.button, ...(atMin ? styles.buttonDisabled : {}) }}
+          aria-label="Decrement"
+        >
           −
         </button>
-        <button onClick={reset} style={{ ...styles.button, ...styles.resetButton }} aria-label="Reset">
-          Reset
+        <button
+          onClick={reset}
+          style={{ ...styles.button, ...styles.restartButton }}
+          aria-label="Restart"
+        >
+          Restart
         </button>
-        <button onClick={increment} style={styles.button} aria-label="Increment">
+        <button
+          onClick={increment}
+          disabled={atMax}
+          style={{ ...styles.button, ...(atMax ? styles.buttonDisabled : {}) }}
+          aria-label="Increment"
+        >
           +
         </button>
       </div>
+      {(atMin || atMax) && (
+        <p style={styles.limitNote}>
+          {atMin ? `Minimum limit (${CounterEntity.MIN}) reached` : `Maximum limit (${CounterEntity.MAX}) reached`}
+        </p>
+      )}
     </div>
   );
 }
@@ -41,7 +66,7 @@ const styles: Record<string, CSSProperties> = {
     borderRadius: '12px',
     background: '#ffffff',
     boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-    minWidth: '240px',
+    minWidth: '280px',
   },
   count: {
     fontSize: '4rem',
@@ -49,7 +74,7 @@ const styles: Record<string, CSSProperties> = {
     lineHeight: 1,
     letterSpacing: '-0.02em',
     color: '#1a1a1a',
-    minWidth: '6rem',
+    minWidth: '8rem',
     textAlign: 'center',
   },
   controls: {
@@ -68,12 +93,22 @@ const styles: Record<string, CSSProperties> = {
     background: '#0070f3',
     color: '#ffffff',
     cursor: 'pointer',
-    transition: 'background 0.15s ease',
+    transition: 'background 0.15s ease, opacity 0.15s ease',
   },
-  resetButton: {
+  buttonDisabled: {
+    background: '#d1d5db',
+    color: '#9ca3af',
+    cursor: 'not-allowed',
+  },
+  restartButton: {
     fontSize: '0.875rem',
     width: 'auto',
     padding: '0 1rem',
     background: '#6b7280',
+  },
+  limitNote: {
+    fontSize: '0.75rem',
+    color: '#ef4444',
+    textAlign: 'center',
   },
 };
