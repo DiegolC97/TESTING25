@@ -52,6 +52,20 @@ export class Counter {
   }
 
   /**
+   * Multiplies the current count by 2, clamped to [MIN, MAX].
+   */
+  multiplyByTwo(): void {
+    const result = this._count * 2;
+    if (result > Counter.MAX) {
+      this._count = Counter.MAX;
+    } else if (result < Counter.MIN) {
+      this._count = Counter.MIN;
+    } else {
+      this._count = result;
+    }
+  }
+
+  /**
    * Returns a new Counter instance with the same count value.
    * Used by consumers that need immutable snapshots (e.g. React state).
    */

@@ -6,6 +6,7 @@ export interface UseCounterResult {
   increment: () => void;
   decrement: () => void;
   reset: () => void;
+  multiplyByTwo: () => void;
 }
 
 /**
@@ -42,5 +43,13 @@ export function useCounter(): UseCounterResult {
     });
   }, []);
 
-  return { count: counter.count, increment, decrement, reset };
+  const multiplyByTwo = useCallback(() => {
+    setCounter((prev: Counter) => {
+      const next = prev.clone();
+      next.multiplyByTwo();
+      return next;
+    });
+  }, []);
+
+  return { count: counter.count, increment, decrement, reset, multiplyByTwo };
 }
