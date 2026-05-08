@@ -11,7 +11,7 @@ import { useCounter } from '@interfaces/hooks';
  * No logic lives here beyond rendering and wiring user actions to the hook.
  */
 export function Counter() {
-  const { count, increment, decrement, reset, multiplyByTwo } = useCounter();
+  const { count, increment, decrement, reset, multiplyByTwo, multiplyByFour } = useCounter();
 
   const atMin = count === CounterEntity.MIN;
   const atMax = count === CounterEntity.MAX;
@@ -38,6 +38,14 @@ export function Counter() {
           aria-label="Multiply by 2"
         >
           ×2
+        </button>
+        <button
+          onClick={multiplyByFour}
+          disabled={atZero}
+          style={{ ...styles.button, ...styles.multiplyButton, ...(atZero ? styles.buttonDisabled : {}) }}
+          aria-label="Multiply by 4"
+        >
+          ×4
         </button>
         <button
           onClick={reset}
